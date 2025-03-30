@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  cloudy_coffee_database:
+    image: mongo:latest
+    container_name: cloudy_coffee_database
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: nestjs
+    volumes:
+      - cloudy_coffee_database:/data/db
+    networks:
+      - cloudy_coffee
+
+volumes:
+  cloudy_coffee_database:
+
+networks:
+  cloudy_coffee:
+    driver: bridge
