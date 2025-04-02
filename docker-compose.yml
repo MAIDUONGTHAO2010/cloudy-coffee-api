@@ -1,6 +1,24 @@
 version: '3.8'
 
 services:
+  cloudy_coffee_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cloudy_coffee_app
+    ports:
+      - "${PORT}:${PORT}"
+    env_file:
+      - .env
+    depends_on:
+      - cloudy_coffee_database
+    networks:
+      -
+        cloudy_coffee
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
   cloudy_coffee_database:
     image: mongo:latest
     container_name: cloudy_coffee_database
