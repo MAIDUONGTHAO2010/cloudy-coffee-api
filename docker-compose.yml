@@ -17,7 +17,7 @@ services:
         cloudy_coffee
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - node_modules:/usr/src/app/node_modules
 
   cloudy_coffee_database:
     image: mongo:latest
@@ -33,8 +33,25 @@ services:
     networks:
       - cloudy_coffee
 
+  cloudy_coffee_minio:
+    image: minio/minio:latest
+    container_name: cloudy_coffee_minio
+    ports:
+      - "9000:9000" # MinIO API port
+      - "9001:9001" # MinIO Console port
+    environment:
+      MINIO_ROOT_USER: minioadmin # Default username
+      MINIO_ROOT_PASSWORD: minioadmin # Default password
+    command: server /data --console-address ":9001"
+    volumes:
+      - cloudy_coffee_minio:/data
+    networks:
+      - cloudy_coffee
+
 volumes:
   cloudy_coffee_database:
+  cloudy_coffee_minio:
+  node_modules:
 
 networks:
   cloudy_coffee:

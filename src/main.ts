@@ -15,12 +15,12 @@ async function bootstrap() {
   const version = configService.get('VERSION');
   app.setGlobalPrefix(`api/${version}`, { exclude: [''] });
 
-  useContainer(app, { fallback: true });
-
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true
+  }));
 
   const swaggerConfig = new DocumentBuilder()
-    // .setBasePath(`api/${version}`)
+    .setBasePath(`api/${version}`)
     .setTitle('NestJS API')
     .setDescription('API documentation for NestJS app')
     .setVersion('1.0')
@@ -29,6 +29,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup(`api/${version}/docs`, app, document);
 
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.enableCors();
 
   await app.listen(port);

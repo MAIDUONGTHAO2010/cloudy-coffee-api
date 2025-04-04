@@ -1,11 +1,16 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, Validate } from 'class-validator';
+import { UniqueEmailConstraint } from '../validators/unique-email.decorator';
 
 export class CreateUserDto {
-    @IsString()
-    @IsNotEmpty()
-    name: string;
+  @IsNotEmpty()
+  @IsEmail()
+  @Validate(UniqueEmailConstraint)
+  email: string;
 
-    @IsString()
-    @IsNotEmpty()
-    email: string;
+  @IsNotEmpty()
+  password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  nickname: string;
 }
